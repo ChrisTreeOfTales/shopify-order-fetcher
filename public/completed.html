@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Completed Orders - Order Management System</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="colors.css">
+    <!-- Using Tailwind CSS for quick styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles for completed orders cards */
+        .order-card {
+            transition: all 0.2s ease;
+            border-left: 4px solid #10b981; /* Green border for completed */
+        }
+        
+        .order-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .status-completed {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+        
+        .product-badge {
+            background-color: #f3f4f6;
+            color: #374151;
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.375rem;
+            font-weight: 500;
+        }
+        
+        .customer-info {
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
+        
+        .completion-badge {
+            background-color: #10b981;
+            color: white;
+            font-size: 0.75rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-weight: 600;
+        }
+        
+        .plate-count {
+            color: #059669;
+            font-weight: 600;
+        }
+        
+        .grid-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        @media (max-width: 640px) {
+            .grid-cards {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <!-- Top Navigation -->
+    <nav class="top-nav">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                <a href="/" class="nav-brand">
+                    📦 Order Management
+                </a>
+                <div class="nav-links">
+                    <a href="/" class="nav-link">
+                        <span class="nav-icon">🏠</span>
+                        Dashboard
+                    </a>
+                    <a href="/printing.html" class="nav-link">
+                        <span class="nav-icon">🖨️</span>
+                        Printing
+                    </a>
+                    <a href="/completed.html" class="nav-link">
+                        <span class="nav-icon">✅</span>
+                        Completed
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mx-auto px-4 py-8">
+        <!-- Header -->
+        <div class="mb-8">
+            <div class="text-center">
+                <h1 class="text-4xl font-bold text-gray-800 mb-2">Completed Orders</h1>
+                <p class="text-gray-600">Order items where all printing plates are completed</p>
+            </div>
+        </div>
+
+        <!-- Summary Stats -->
+        <div id="summary-stats" class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-8">
+            <!-- Stats will be inserted here -->
+        </div>
+
+        <!-- Loading state -->
+        <div id="loading" class="flex justify-center items-center py-12">
+            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-green-500"></div>
+            <span class="ml-3 text-gray-600">Loading completed orders...</span>
+        </div>
+
+        <!-- Error state -->
+        <div id="error" class="hidden bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+            <strong class="font-bold">Error!</strong>
+            <span id="error-message">Failed to load completed orders</span>
+        </div>
+
+        <!-- Completed Orders Cards -->
+        <div id="completed-orders-container" class="hidden">
+            <div id="completed-orders-grid" class="grid-cards">
+                <!-- Order cards will be inserted here -->
+            </div>
+        </div>
+
+        <!-- No completed orders state -->
+        <div id="no-orders" class="hidden text-center py-12">
+            <div class="text-gray-400 text-6xl mb-4">✅</div>
+            <h2 class="text-2xl font-semibold text-gray-600 mb-2">No Completed Orders Yet</h2>
+            <p class="text-gray-500">Order items will appear here once all their printing plates are marked as "Printed"</p>
+            <div class="mt-6">
+                <a href="/printing.html" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg transition-colors">
+                    Go to Printing Management
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script src="navigation.js"></script>
+    <script src="completed.js"></script>
+</body>
+</html>

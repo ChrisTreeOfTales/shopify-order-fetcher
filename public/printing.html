@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Printing Management - Order Management System</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="colors.css">
+    <!-- Using Tailwind CSS for quick styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles for the printing management table */
+        .status-dropdown {
+            min-width: 150px;
+        }
+        
+        .status-cell {
+            position: relative;
+        }
+        
+        .status-badge {
+            cursor: pointer;
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        
+        .status-badge:hover {
+            transform: scale(1.05);
+        }
+        
+        .status-in-queue { background-color: #fef3c7; color: #92400e; }
+        .status-in-progress { background-color: #dbeafe; color: #1e40af; }
+        .status-blocked { background-color: #fee2e2; color: #991b1b; }
+        .status-reprint { background-color: #fdf2f8; color: #be185d; }
+        .status-printed { background-color: #d1fae5; color: #065f46; }
+        .status-done { background-color: #dcfce7; color: #166534; }
+        
+        .table-row:hover {
+            background-color: #f9fafb;
+        }
+        
+        .dropdown-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: transparent;
+            z-index: 10;
+        }
+        
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            z-index: 20;
+            max-height: 250px;
+            overflow-y: auto;
+            min-width: 140px;
+        }
+        
+        .dropdown-item {
+            padding: 12px 16px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background-color 0.15s ease;
+            font-weight: 500;
+        }
+        
+        .dropdown-item:hover {
+            background-color: #f3f4f6;
+        }
+        
+        .details-column {
+            max-width: 300px;
+            width: fit-content;
+        }
+        
+        .color-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .color-circle {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid #e5e7eb;
+            flex-shrink: 0;
+        }
+        
+        /* Table column widths and compact layout */
+        .product-column {
+            width: 25%;
+            min-width: 200px;
+        }
+        
+        .color-column {
+            width: 12%;
+            min-width: 100px;
+        }
+        
+        .details-column {
+            width: 15%;
+            max-width: 200px;
+        }
+        
+        .status-column {
+            width: 10%;
+            min-width: 90px;
+        }
+        
+        .created-column {
+            width: 10%;
+            min-width: 90px;
+        }
+        
+        /* Compact row styling */
+        .compact-row td {
+            padding: 8px 12px !important;
+            vertical-align: middle;
+        }
+        
+        .compact-row .text-sm {
+            font-size: 0.875rem;
+            line-height: 1.2;
+        }
+        
+        .compact-row .text-xs {
+            font-size: 0.75rem;
+            line-height: 1.1;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <!-- Top Navigation -->
+    <nav class="top-nav">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                <a href="/" class="nav-brand">
+                    📦 Order Management
+                </a>
+                <div class="nav-links">
+                    <a href="/" class="nav-link">
+                        <span class="nav-icon">🏠</span>
+                        Dashboard
+                    </a>
+                    <a href="/printing.html" class="nav-link">
+                        <span class="nav-icon">🖨️</span>
+                        Printing
+                    </a>
+                    <a href="/completed.html" class="nav-link">
+                        <span class="nav-icon">✅</span>
+                        Completed
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mx-auto px-4 py-8">
+        <!-- Header -->
+        <div class="mb-8">
+            <div class="text-center">
+                <h1 class="text-4xl font-bold text-gray-800 mb-2">Printing Management</h1>
+                <p class="text-gray-600">Manage active printing plates (In Queue, In Progress, Blocked)</p>
+            </div>
+        </div>
+
+        <!-- Statistics Cards -->
+        <div id="stats-cards" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
+            <!-- Stats cards will be inserted here -->
+        </div>
+
+        <!-- Loading state -->
+        <div id="loading" class="flex justify-center items-center py-12">
+            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+            <span class="ml-3 text-gray-600">Loading printing plates...</span>
+        </div>
+
+        <!-- Error state -->
+        <div id="error" class="hidden bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+            <strong class="font-bold">Error!</strong>
+            <span id="error-message">Failed to load printing plates</span>
+        </div>
+
+        <!-- Filters -->
+        <div id="filters" class="hidden mb-6 bg-white rounded-lg shadow p-4">
+            <div class="flex flex-wrap gap-4 items-center">
+                <span class="font-medium text-gray-700">Filter by status:</span>
+                <button class="filter-btn active" data-status="all">All Active</button>
+                <button class="filter-btn" data-status="In Queue">In Queue</button>
+                <button class="filter-btn" data-status="In Progress">In Progress</button>
+                <button class="filter-btn" data-status="Blocked">Blocked</button>
+                <button class="filter-btn" data-status="Reprint">Reprint</button>
+            </div>
+        </div>
+
+        <!-- Printing Plates Table -->
+        <div id="plates-table-container" class="hidden bg-white rounded-lg shadow overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider product-column">Product</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider color-column">Primary Color</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider color-column">Secondary Color</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider details-column">Other Details</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider status-column">Status</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider created-column">Created</th>
+                        </tr>
+                    </thead>
+                    <tbody id="plates-table-body" class="bg-white divide-y divide-gray-200">
+                        <!-- Table rows will be inserted here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- No plates state -->
+        <div id="no-plates" class="hidden text-center py-12">
+            <div class="text-gray-400 text-6xl mb-4">✅</div>
+            <h2 class="text-2xl font-semibold text-gray-600 mb-2">No Active Printing Plates</h2>
+            <p class="text-gray-500">All plates are either printed or completed! Check the Completed Orders view for finished items.</p>
+            <div class="mt-6">
+                <a href="/completed.html" class="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg transition-colors">
+                    View Completed Orders
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dropdown overlay (hidden by default) -->
+    <div id="dropdown-overlay" class="dropdown-overlay hidden"></div>
+
+    <script src="navigation.js"></script>
+    <script src="printing.js"></script>
+</body>
+</html>

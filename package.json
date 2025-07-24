@@ -3,7 +3,18 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
+    "start": "npm run build && node dist/server.js",
+    "dev": "ts-node -r tsconfig-paths/register src/server.ts",
+    "watch": "nodemon --exec ts-node -r tsconfig-paths/register src/server.ts",
+    "fetch": "node index.js",
+    "fetch-save": "node index-with-database.js",
+    "setup-db": "node database-setup.js",
+    "view-db": "node view-database.js",
+    "update-schema": "node update-schema.js",
+    "setup-products": "node setup-products.js",
+    "test-plates": "node test-plate-count.js"
   },
   "keywords": [],
   "author": "",
@@ -11,6 +22,18 @@
   "description": "",
   "dependencies": {
     "axios": "^1.11.0",
-    "dotenv": "^17.2.0"
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.0",
+    "express": "^4.21.2",
+    "sqlite3": "^5.1.7"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.3",
+    "@types/node": "^24.1.0",
+    "nodemon": "^3.1.10",
+    "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5.8.3"
   }
 }
