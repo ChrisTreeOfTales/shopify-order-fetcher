@@ -1,2 +1,7 @@
 .env
 node_modules
+orders.db
+dist/
+*.log
+.DS_Store
+.vscode/settings.json

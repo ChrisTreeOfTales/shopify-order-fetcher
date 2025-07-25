@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Database Admin - Shopify Order System</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+    <div class="min-h-screen">
+        <!-- Navigation -->
+        <nav class="bg-blue-600 text-white shadow-lg">
+            <div class="max-w-7xl mx-auto px-4">
+                <div class="flex justify-between h-16">
+                    <div class="flex items-center">
+                        <span class="text-xl font-bold">Database Admin</span>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <a href="index.html" class="hover:bg-blue-700 px-3 py-2 rounded">Orders</a>
+                        <a href="printing.html" class="hover:bg-blue-700 px-3 py-2 rounded">Printing</a>
+                        <a href="completed.html" class="hover:bg-blue-700 px-3 py-2 rounded">Assembly</a>
+                        <a href="admin.html" class="bg-blue-800 px-3 py-2 rounded">Admin</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="max-w-7xl mx-auto py-6 px-4">
+            <!-- Loading State -->
+            <div id="loading" class="text-center py-8">
+                <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+                <p class="mt-4 text-gray-600">Loading database tables...</p>
+            </div>
+
+            <!-- Error State -->
+            <div id="error" class="hidden bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+                <p id="error-message"></p>
+            </div>
+
+            <!-- Table Selection -->
+            <div id="table-selector" class="hidden mb-6">
+                <h2 class="text-2xl font-bold mb-4">Database Tables</h2>
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                    <button onclick="loadTable('customers')" class="table-btn bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
+                        Customers
+                    </button>
+                    <button onclick="loadTable('orders')" class="table-btn bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">
+                        Orders
+                    </button>
+                    <button onclick="loadTable('order_items')" class="table-btn bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded">
+                        Order Items
+                    </button>
+                    <button onclick="loadTable('printing_plates')" class="table-btn bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded">
+                        Printing Plates
+                    </button>
+                    <button onclick="loadTable('products')" class="table-btn bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded">
+                        Products
+                    </button>
+                    <button onclick="loadTable('parts')" class="table-btn bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">
+                        Parts
+                    </button>
+                </div>
+            </div>
+
+            <!-- Table Content -->
+            <div id="table-content" class="hidden">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 id="table-title" class="text-xl font-bold"></h3>
+                    <div class="space-x-2">
+                        <button onclick="showTables()" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded">
+                            Back to Tables
+                        </button>
+                        <button onclick="addRecord()" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">
+                            Add Record
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Table Data -->
+                <div class="bg-white rounded-lg shadow overflow-x-auto">
+                    <table id="data-table" class="min-w-full">
+                        <thead id="table-header" class="bg-gray-50">
+                        </thead>
+                        <tbody id="table-body">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Edit Modal -->
+            <div id="edit-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden flex items-center justify-center">
+                <div class="bg-white rounded-lg p-6 max-w-2xl w-full mx-4 max-h-screen overflow-y-auto">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 id="modal-title" class="text-lg font-bold"></h3>
+                        <button onclick="closeModal()" class="text-gray-500 hover:text-gray-700">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    <form id="edit-form" class="space-y-4">
+                        <div id="form-fields"></div>
+                        <div class="flex justify-end space-x-2">
+                            <button type="button" onclick="closeModal()" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded">
+                                Cancel
+                            </button>
+                            <button type="button" onclick="deleteRecord()" id="delete-btn" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">
+                                Delete
+                            </button>
+                            <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
+                                Save
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="admin.js"></script>
+</body>
+</html>
