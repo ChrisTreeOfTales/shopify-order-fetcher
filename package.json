@@ -11,7 +11,10 @@
     "fetch": "node index.js",
     "fetch-save": "node index-with-database.js",
     "setup-db": "node database-setup.js",
+    "setup-db-v2": "node database-setup-v2.js",
     "view-db": "node view-database.js",
+    "view-parts": "node view-parts.js",
+    "migrate-sek": "node migrate-parts-to-sek.js",
     "update-schema": "node update-schema.js",
     "setup-products": "node setup-products.js",
     "test-plates": "node test-plate-count.js"
@@ -25,11 +28,16 @@
     "cors": "^2.8.5",
     "dotenv": "^17.2.0",
     "express": "^4.21.2",
+    "module-alias": "^2.2.3",
     "sqlite3": "^5.1.7"
+  },
+  "_moduleAliases": {
+    "@": "dist"
   },
   "devDependencies": {
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.3",
+    "@types/module-alias": "^2.0.4",
     "@types/node": "^24.1.0",
     "nodemon": "^3.1.10",
     "ts-node": "^10.9.2",

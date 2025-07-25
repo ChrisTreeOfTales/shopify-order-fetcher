@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Completed Orders - Order Management System</title>
+    <title>Assembly - Order Management System</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="colors.css">
     <!-- Using Tailwind CSS for quick styling -->
@@ -55,14 +55,69 @@
         
         .grid-cards {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
             gap: 1.5rem;
+            align-items: start;
+            width: 100%;
         }
         
+        .order-card {
+            width: 100%;
+            min-width: 280px;
+        }
+        
+        /* Mobile: 1 column */
         @media (max-width: 640px) {
             .grid-cards {
                 grid-template-columns: 1fr;
             }
+        }
+        
+        /* Tablet: 2 columns */
+        @media (min-width: 641px) and (max-width: 1024px) {
+            .grid-cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        /* Desktop small: 3 columns */
+        @media (min-width: 1025px) and (max-width: 1400px) {
+            .grid-cards {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        
+        /* Desktop large: 4 columns */
+        @media (min-width: 1401px) and (max-width: 1800px) {
+            .grid-cards {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+        
+        /* Ultra-wide: 5 columns */
+        @media (min-width: 1801px) {
+            .grid-cards {
+                grid-template-columns: repeat(5, 1fr);
+            }
+        }
+        
+        /* Color indicator styles */
+        .color-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .color-circle {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            border: 1px solid #e5e7eb;
+            flex-shrink: 0;
+        }
+        
+        .color-name {
+            font-size: 12px;
+            color: #4b5563;
         }
     </style>
 </head>
@@ -85,7 +140,7 @@
                     </a>
                     <a href="/completed.html" class="nav-link">
                         <span class="nav-icon">✅</span>
-                        Completed
+                        Assembly
                     </a>
                 </div>
             </div>
@@ -96,7 +151,7 @@
         <!-- Header -->
         <div class="mb-8">
             <div class="text-center">
-                <h1 class="text-4xl font-bold text-gray-800 mb-2">Completed Orders</h1>
+                <h1 class="text-4xl font-bold text-gray-800 mb-2">🔧 Assembly</h1>
                 <p class="text-gray-600">Order items where all printing plates are completed</p>
             </div>
         </div>
@@ -128,7 +183,7 @@
         <!-- No completed orders state -->
         <div id="no-orders" class="hidden text-center py-12">
             <div class="text-gray-400 text-6xl mb-4">✅</div>
-            <h2 class="text-2xl font-semibold text-gray-600 mb-2">No Completed Orders Yet</h2>
+            <h2 class="text-2xl font-semibold text-gray-600 mb-2">No Items Ready for Assembly Yet</h2>
             <p class="text-gray-500">Order items will appear here once all their printing plates are marked as "Printed"</p>
             <div class="mt-6">
                 <a href="/printing.html" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg transition-colors">

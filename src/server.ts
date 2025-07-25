@@ -1,4 +1,7 @@
 // Main TypeScript server
+// Configure module aliases for runtime path resolution
+import 'module-alias/register';
+
 import express from 'express';
 import cors from 'cors';
 import path from 'path';
